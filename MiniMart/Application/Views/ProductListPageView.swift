@@ -49,7 +49,7 @@ struct ProductListPageView: View {
                     self.isCartViewPresented = true
                 }) {
                     Image(systemName: "folder")
-                    Text("\(cartState.products.count)")
+                    Text("\(cartState.cartItemCount)")
                 }
             }
         }
