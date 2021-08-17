@@ -10,6 +10,7 @@ import SwiftUI
 struct CartPageView: View {
     @State var isAlertPresented: Bool = false
     @EnvironmentObject var cartState: CartState
+    @Binding var isCartViewPresented: Bool
 
     var body: some View {
         VStack {
@@ -50,6 +51,7 @@ struct CartPageView: View {
                     title: Text("注文しました"),
                     message: nil,
                     dismissButton: Alert.Button.default(Text("OK")) {
+                        isCartViewPresented = false
                         cartState.resetCart()
                     }
                 )
@@ -60,9 +62,10 @@ struct CartPageView: View {
 }
 
 struct CartPageView_Previews: PreviewProvider {
+    @State static var isCartViewPresented: Bool = false
     static var previews: some View {
         NavigationView {
-            CartPageView()
+            CartPageView(isCartViewPresented: $isCartViewPresented)
         }
     }
 }

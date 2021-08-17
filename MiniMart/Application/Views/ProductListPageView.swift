@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ProductListPageView: View {
     @State var products: [FetchProductsQuery.Data.Product] = []
-    @State var isCartViewPresented: Bool = false
     @EnvironmentObject var cartState: CartState
 
     var body: some View {
@@ -45,17 +44,7 @@ struct ProductListPageView: View {
         .navigationTitle("MiniMart")
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Button(action: {
-                    self.isCartViewPresented = true
-                }) {
-                    Image(systemName: "folder")
-                    Text("\(cartState.cartItemCount)")
-                }
-            }
-        }
-        .sheet(isPresented: $isCartViewPresented) {
-            NavigationView {
-                CartPageView()
+                CartButton()
             }
         }
     }
