@@ -14,17 +14,42 @@ struct CartPageView: View {
 
     var body: some View {
         VStack {
-            List(cartState.cartItems, id: \.product.id) { cartItem in
-                HStack(alignment: .top) {
-                    RemoteImage(urlString: cartItem.product.imageUrl)
-                        .frame(width: 100, height: 100)
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(cartItem.product.name)
-                        Text("\(cartItem.product.price)円")
-                        Text("\(cartItem.quantity)個")
+            ScrollView {
+                LazyVStack(alignment: .leading) {
+                    ForEach(cartState.cartItems, id: \.product.id) { cartItem in
+                        HStack(alignment: .top) {
+                            RemoteImage(urlString: cartItem.product.imageUrl)
+                                .frame(width: 100, height: 100)
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(cartItem.product.name)
+                                Text("\(cartItem.product.price)円")
+                                HStack {
+                                    Button(action: {
+                                        cartState.removeCart(product: cartItem.product)
+                                    }) {
+                                        Image(systemName: "minus")
+                                            .foregroundColor(Color.white)
+                                            .frame(width: 30, height: 30)
+                                            .background(Color.orange)
+                                    }
+                                    .cornerRadius(20)
+                                    Text("\(cartItem.quantity)個")
+                                    Button(action: {
+                                        cartState.addCart(product: cartItem.product)
+                                    }) {
+                                        Image(systemName: "plus")
+                                            .foregroundColor(Color.white)
+                                            .frame(width: 30, height: 30)
+                                            .background(Color.orange)
+                                    }
+                                    .cornerRadius(20)
+                                }
+                            }
+                            .padding(.vertical, 8)
+                        }
                     }
-                    .padding(.vertical, 8)
                 }
+                .padding(.horizontal, 20)
             }
             VStack(spacing: 15) {
                 Divider()
@@ -66,6 +91,7 @@ struct CartPageView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             CartPageView(isCartViewPresented: $isCartViewPresented)
+                .environmentObject(CartState())
         }
     }
 }
