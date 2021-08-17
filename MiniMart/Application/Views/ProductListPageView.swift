@@ -10,6 +10,7 @@ import SwiftUI
 struct ProductListPageView: View {
     @State var products: [FetchProductsQuery.Data.Product] = []
     @State var isCartViewPresented: Bool = false
+    @EnvironmentObject var cartState: CartState
 
     var body: some View {
         List(products, id: \.id) { product in
@@ -48,6 +49,7 @@ struct ProductListPageView: View {
                     self.isCartViewPresented = true
                 }) {
                     Image(systemName: "folder")
+                    Text("\(cartState.products.count)")
                 }
             }
         }
